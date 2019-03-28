@@ -1,0 +1,152 @@
+@charset "utf-8";
+
+body {
+	font-family: "メイリオ", sans-serif;
+  text-align: center;
+  background-color: #acf;
+  color: #666;
+  a {
+    text-decoration: none;
+    color: #666;
+  }
+}
+
+#top_page {
+  h1 {
+    margin-top: 70px;
+    font-size: 60px;
+  }
+  p {
+    margin-top: 20px;
+    font-size: 20px;
+    padding-bottom: 40px;
+  }
+  #register, #login {
+    margin: 20px 10px 0 10px;
+    font-size: 30px;
+    background-color: #666;
+    a {
+      display: block;
+      padding: 10px 0 10px 0;
+      color: #acf;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+#form {
+  p {
+    font-size: 24px;
+    text-align: left;
+    padding: 12px;
+  }
+  h1 {
+    margin-top: 50px;
+    font-size: 40px;
+    padding-bottom: 20px;
+  }
+  #user_id, #password {
+    font-size: 20px;
+  }
+  form {
+    input {
+      width: 98%;
+      margin-top: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  }
+  .error {
+    padding: 0 0 0 12px;
+    font-size: 18px;
+  }
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  height: 60px; 
+  background-color: #fff;
+  #return {
+    display: flex;
+    font-size: 30px;
+    padding-left: 10px;
+    align-items: center;
+  }
+  h1 {
+    width: 50%;
+    display: flex;
+    font-size: 24px;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 60px 0 10px;
+    span {
+      padding-left: 5px;
+      font-size: 18px;
+    }
+  }
+  nav {
+    font-size: 20px;
+    li {
+      padding: 20px;
+    }
+  }
+}
+
+section.list {
+  text-align: left;
+  padding: 10px;
+  ul {
+    padding: 5px 0;
+    li {
+      font-size: 18px;
+      padding-bottom: 18px;
+    }
+  }
+  .btn {
+    background-color: #666;
+    color: #acf;
+    padding: 5px;
+    font-size: 14px;
+    width: 49%;
+  }
+}
+
+form#add {
+  width: 100%;
+  #add-text {
+    font-size: 16px;
+    width: 80%;
+  }
+  #add-btn {
+    background-color: #666;
+    color: #acf;
+    font-size: 16px;
+    width: 11%;
+  }
+}
+
+footer {
+  padding-top: 20px;
+  .error {
+    text-align: left;
+    padding: 10px;
+  }
+}
+
+.error {
+  color: #f44;
+}
+
+#caution {
+    color: #f44;
+    padding-top: 15px;
+    font-size: 15px;
+  }
