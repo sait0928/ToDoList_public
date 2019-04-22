@@ -103,11 +103,22 @@ header {
 section.list {
   text-align: left;
   padding: 10px;
+  #deadline {
+    padding-bottom: 10px;
+    font-size: 18px;
+    color: #393;
+  }
   ul {
     padding: 5px 0;
     li {
       font-size: 18px;
       padding-bottom: 18px;
+    }
+    li.hurry a{
+      color: #933;
+    }
+    li.danger a{
+      color: #e00;
     }
   }
   .btn {
@@ -131,6 +142,10 @@ form#add {
     font-size: 16px;
     width: 11%;
   }
+  label {
+    float: left;
+    padding: 10px;
+  }
 }
 
 footer {
@@ -146,7 +161,16 @@ footer {
 }
 
 #caution {
-    color: #f44;
-    padding-top: 15px;
-    font-size: 15px;
-  }
+  color: #f44;
+  padding-top: 15px;
+  font-size: 15px;
+}
+
+.already {
+  color: #33f;
+}
+/*サーバーに上げる時用
+.drawer-toggle {
+  margin-top: 60px;
+}
+*/

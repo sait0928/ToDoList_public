@@ -112,6 +112,12 @@ section.list {
   padding: 10px;
 }
 
+section.list #deadline {
+  padding-bottom: 10px;
+  font-size: 18px;
+  color: #393;
+}
+
 section.list ul {
   padding: 5px 0;
 }
@@ -119,6 +125,14 @@ section.list ul {
 section.list ul li {
   font-size: 18px;
   padding-bottom: 18px;
+}
+
+section.list ul li.hurry a {
+  color: #933;
+}
+
+section.list ul li.danger a {
+  color: #e00;
 }
 
 section.list .btn {
@@ -145,6 +159,11 @@ form#add #add-btn {
   width: 11%;
 }
 
+form#add label {
+  float: left;
+  padding: 10px;
+}
+
 footer {
   padding-top: 20px;
 }
@@ -163,3 +182,13 @@ footer .error {
   padding-top: 15px;
   font-size: 15px;
 }
+
+.already {
+  color: #33f;
+}
+
+/*サーバーに上げる時用
+.drawer-toggle {
+  margin-top: 60px;
+}
+*/
