@@ -10,7 +10,9 @@ if(isset($_GET['parentId'])) {
 
 $id_arr = $_POST['id_arr'];
 // var_dump($id_arr);
-$achieve = $_GET['achieve'];
+if(isset($_GET['achieve'])) {
+  $achieve = $_GET['achieve'];
+}
 
 require "functions/functions.php";
 
@@ -21,6 +23,10 @@ if(isset($_POST['transfer'])) {
 } else if(isset($_POST['delete'])) {
   if(count($id_arr)) {
     deleteTasks($id_arr);
+  }
+} else if(isset($_POST['change-color'])) {
+  if(count($id_arr)) {
+    conversionChildTasks($id_arr);
   }
 }
 

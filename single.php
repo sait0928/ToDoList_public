@@ -10,6 +10,7 @@ $parent_id = $_GET['parentId'];
 
 require "functions/functions.php";
 
+$parent_rows = selectParentTasks($user_name);
 $rows = selectChildTasks($user_name, $parent_id);
 $title = showSingleTitle($user_name, $parent_id);
 
@@ -31,16 +32,26 @@ include("header.php");
   </nav>
 </header>
 <section class="list">
+  <?php foreach($parent_rows as $row) : ?>
+  <?php if($row['id'] === $parent_id) : ?>
+  <p id="deadline">期日：<?php echo date('Y/m/d', strtotime(h($row['deadline']))); ?></p>
+  <?php endif; ?>
+  <?php endforeach; ?>
   <form action="control.php?parentId=<?php echo h($parent_id); ?>" method="POST">
     <ul>
       <?php foreach ($rows as $row) : ?>
+        <?php if($row['achieve'] === 'still') : ?>
         <li>
+        <?php else : ?>
+        <li class="already">
+        <?php endif; ?>
           <input type="checkbox" name="id_arr[]" value="<?php echo h($row['id']); ?>">
           <?php echo h($row['content']); ?>
         </li>
       <?php endforeach; ?>
     </ul>
-    <input class="update btn" type="submit" name="delete" value="選択した項目を削除">
+    <input class="update btn single-btn" type="submit" name="change-color" value="項目の達成状況を変更">
+    <input class="update btn single-btn" type="submit" name="delete" value="選択した項目を削除">
   </form>
 </section>
 <footer>
