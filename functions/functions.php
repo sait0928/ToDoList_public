@@ -6,7 +6,7 @@ function h($string)
   return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
 }
 
-function insertParentTask($user_task, $user_name, $date) {
+function insertMainTask($user_task, $user_name, $date) {
   $pdo = connect();
   $stmt = $pdo->prepare("INSERT INTO tasks (content, users_name, achieve, deadline) VALUES (:content, :users_name, 'still', :deadline)");
 
@@ -17,9 +17,8 @@ function insertParentTask($user_task, $user_name, $date) {
   return $stmt->execute();
 }
 
-function selectParentTasks($user_name) {
+function fetchMainTasks($user_name) {
   $pdo = connect();
-  // 条件複数指定はAND,NULLの検索には=NULLではなくISNULLを使う
   $stmt = $pdo->prepare("SELECT * FROM tasks WHERE parent_id IS NULL AND achieve = 'still' AND users_name = :users_name ORDER BY deadline ASC");
 
   $stmt->bindParam(':users_name', $user_name, PDO::PARAM_STR);
@@ -29,7 +28,7 @@ function selectParentTasks($user_name) {
   return $stmt->fetchAll();
 }
 
-function showSingleTitle($user_name, $parent_id) {
+function showTitle($user_name, $parent_id) {
   $pdo = connect();
   $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = :id AND users_name = :users_name");
   $stmt->bindParam(':id', $parent_id, PDO::PARAM_STR);
@@ -40,7 +39,7 @@ function showSingleTitle($user_name, $parent_id) {
   return $stmt->fetchAll();
 }
 
-function selectAchievedTasks($user_name) {
+function fetchAchievedTasks($user_name) {
   $pdo = connect();
   $stmt = $pdo->prepare("SELECT * FROM tasks WHERE parent_id IS NULL AND achieve = 'already' AND users_name = :users_name");
   $stmt->bindParam(':users_name', $user_name, PDO::PARAM_STR);
@@ -49,7 +48,7 @@ function selectAchievedTasks($user_name) {
   return $stmt->fetchAll();
 }
 
-function insertChildTask($user_task, $user_name, $parent_id) {
+function insertIndividualTask($user_task, $user_name, $parent_id) {
   $pdo = connect();
   $stmt = $pdo->prepare("INSERT INTO tasks (content, users_name, achieve, parent_id) VALUES (:content, :users_name, 'still', :parent_id)");
 
@@ -60,7 +59,7 @@ function insertChildTask($user_task, $user_name, $parent_id) {
   return $stmt->execute();
 }
 
-function selectChildTasks($user_name, $parent_id) {
+function fetchIndividualTasks($user_name, $parent_id) {
   $pdo = connect();
   $stmt = $pdo->prepare("SELECT * FROM tasks WHERE users_name = :users_name AND parent_id = :parent_id");
 
@@ -74,23 +73,24 @@ function selectChildTasks($user_name, $parent_id) {
 
 function transferTasks($id_arr, $achieve) {
   $pdo = connect();
-  $i = 0;
+
+  $placeholder = implode(",", array_fill(0, count($id_arr), "?"));
+
   if($achieve === "still") {
-    $sql = "UPDATE tasks SET achieve = 'already' WHERE ";
+    $stmt = $pdo->prepare("UPDATE tasks SET achieve = 'already' WHERE id IN (".$placeholder.")");
   } else {
-    $sql = "UPDATE tasks SET achieve = 'still' WHERE ";
+    $stmt = $pdo->prepare("UPDATE tasks SET achieve = 'still' WHERE id IN (".$placeholder.")");
   }
-  foreach($id_arr as $id) {
-    if($i>0) {
-      $sql = $sql." OR ";
-    }
-    $sql = $sql."id = ".$id;
-    $i++;
+
+  foreach($id_arr as $i => $id) {
+    $stmt->bindValue(($i+1), $id);
   }
-  $stmt = $pdo->query($sql);
+
+  return $stmt->execute();
 }
 
-function conversionChildTasks($id_arr) {
+//この関数をもう少しなんとかしたい
+function conversionIndividualTasks($id_arr) {
   foreach($id_arr as $id) {
     $pdo = connect();
     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = :id");
@@ -112,17 +112,14 @@ function conversionChildTasks($id_arr) {
 }
 
 function deleteTasks($id_arr) {
+  $placeholder = implode(",", array_fill(0, count($id_arr), "?"));
+
   $pdo = connect();
-  $i = 0;
-  $sql = "DELETE FROM tasks WHERE ";
-  foreach($id_arr as $id) {
-    if($i>0) {
-      $sql = $sql." OR ";
-    }
-    $sql = $sql."id = ".$id." OR parent_id = ".$id;
-    $i++;
+  $stmt = $pdo->prepare("DELETE FROM tasks WHERE id IN (".$placeholder.")");
+  foreach($id_arr as $i => $id) {
+    $stmt->bindValue(($i+1), $id);
   }
-  $stmt = $pdo->query($sql);
+  return $stmt->execute();
 }
 
 function login($user_name) {
