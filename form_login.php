@@ -1,5 +1,4 @@
 <?php
-// ディスプレイに全てのPHPエラーを表示
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
@@ -7,14 +6,11 @@ session_start();
 
 require "functions/functions.php";
 
-// エラーを連想配列形式で格納する
 $err = [];
 
-// アクセスの時に使われたリクエストのメソッド名を取得し、
-// それがPOSTだった場合
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-  $user_name = filter_input(INPUT_POST, 'name');
-  $password = filter_input(INPUT_POST, 'password');
+  $user_name = h(filter_input(INPUT_POST, 'name'));
+  $password = h(filter_input(INPUT_POST, 'password'));
 
   if ($user_name === '') {
     $err['user_name'] = 'ユーザー名が未入力です';
@@ -23,23 +19,16 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
     $err['password'] = 'パスワードが未入力です';
   }
 
-  // エラーがないとき
   if (count($err) === 0) {
 
     $rows = login($user_name);
 
-    // パスワード検証
     foreach ($rows as $row) {
-      // テーブルにあるハッシュ化されたパスワードを取得
       $password_hash = $row['password'];
 
-      // パスワード一致した場合
       if (password_verify($password, $password_hash)) {
-        // 新しくセッションIDを生成
         session_regenerate_id(true);
-        // セッション変数のキー変数で何の値なのかを分かりやすくしておく
         $_SESSION['login_user'] = $row;
-        // リストページにリダイレクト
         header('Location:list.php');
         return;
       }

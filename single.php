@@ -3,16 +3,14 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 
 session_start();
-// var_dump($_SESSION);
 $user_name = $_SESSION['login_user']['name'];
 $parent_id = $_GET['parentId'];
-// echo $parent_id;
 
 require "functions/functions.php";
 
-$parent_rows = selectParentTasks($user_name);
-$rows = selectChildTasks($user_name, $parent_id);
-$title = showSingleTitle($user_name, $parent_id);
+$parent_rows = fetchMainTasks($user_name);
+$rows = fetchIndividualTasks($user_name, $parent_id);
+$title = showTitle($user_name, $parent_id);
 
 include("header.php");
 ?>

@@ -1,5 +1,4 @@
 <?php
-// test_commit
 include("header.php");
 ?>
 <div id="top_page">

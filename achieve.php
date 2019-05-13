@@ -3,12 +3,11 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 
 session_start();
-// var_dump($_SESSION);
 $user_name = $_SESSION['login_user']['name'];
 
 require "functions/functions.php";
 
-$rows = selectAchievedTasks($user_name);
+$rows = fetchAchievedTasks($user_name);
 
 include("header.php");
 ?>

@@ -1,5 +1,4 @@
 <?php
-// ディスプレイに全てのPHPエラーを表示
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
@@ -7,14 +6,11 @@ session_start();
 
 require "functions/functions.php";
 
-// エラーを連想配列形式で格納する
 $err = [];
 
-// アクセスの時に使われたリクエストのメソッド名を取得し、
-// それがPOSTだった場合
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-  $user_name = filter_input(INPUT_POST, 'name');
-  $password = filter_input(INPUT_POST, 'password');
+  $user_name = h(filter_input(INPUT_POST, 'name'));
+  $password = h(filter_input(INPUT_POST, 'password'));
 
   if ($user_name === '') {
     $err['user_name'] = 'ユーザー名は入力必須です。';
@@ -25,12 +21,9 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
   $password = password_hash($password, PASSWORD_DEFAULT);
 
-  // エラーがないとき
   if (count($err) === 0) {
 
     $count = checkDuplication($user_name);
-
-    // var_dump($count);
 
     if(!($count[0]["COUNT(*)"])) {
 
@@ -38,9 +31,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
       session_regenerate_id(true);
       $_SESSION['login_user']['name'] = $user_name;
-      // var_dump($_SESSION);
       header('Location:list.php');
-      // return;
 
     } else {
       $err['name_dup'] = 'そのユーザー名は既に使われています。';

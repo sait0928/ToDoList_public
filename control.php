@@ -4,17 +4,20 @@ error_reporting(E_ALL);
 
 session_start();
 
+require "functions/functions.php";
+
 if(isset($_GET['parentId'])) {
-  $parent_id = $_GET['parentId'];
+  $parent_id = h($_GET['parentId']);
 }
 
 $id_arr = $_POST['id_arr'];
-// var_dump($id_arr);
-if(isset($_GET['achieve'])) {
-  $achieve = $_GET['achieve'];
+for($i = 0; $i < count($id_arr); $i++) {
+  $id_arr[$i] = h($id_arr[$i]);
 }
 
-require "functions/functions.php";
+if(isset($_GET['achieve'])) {
+  $achieve = h($_GET['achieve']);
+}
 
 if(isset($_POST['transfer'])) {
   if(count($id_arr)) {
@@ -26,7 +29,7 @@ if(isset($_POST['transfer'])) {
   }
 } else if(isset($_POST['change-color'])) {
   if(count($id_arr)) {
-    conversionChildTasks($id_arr);
+    conversionIndividualTasks($id_arr);
   }
 }
 
